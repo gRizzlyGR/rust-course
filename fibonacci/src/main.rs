@@ -1,17 +1,23 @@
 use std::io;
+use std::time::Duration;
 use std::time::Instant;
 
-fn fibonacci(n: usize, algo_name: &str, algo: &dyn Fn(usize) -> usize) {
+fn format_time(duration: &Duration) -> (u128, String) {
+    if duration.as_millis() > 0 {
+        return (duration.as_millis(), String::from("ms"));
+    } else {
+        return (duration.as_nanos(), String::from("ns"));
+    };
+}
+
+fn fibonacci(n: usize, algo_name: String, algo: &dyn Fn(usize) -> usize) {
     let now = Instant::now();
     let fib = algo(n);
-    let elapsed_time = now.elapsed();
+    let (elapsed_time, uom) = format_time(&now.elapsed());
 
     println!(
-        "{}th Fibonacci number is: {} ({}) - It took {} ms.",
-        n,
-        fib,
-        algo_name,
-        elapsed_time.as_millis(),
+        "{}th Fibonacci number is: {} ({}) - It took {} {}.",
+        n, fib, algo_name, elapsed_time, uom
     );
 }
 
@@ -47,6 +53,6 @@ fn main() {
 
     let input: usize = buffer.trim().parse().expect("Not a number");
 
-    fibonacci(input, "iterative", &iter_fibonacci);
-    fibonacci(input, "recusive", &recursive_fibonacci);
+    fibonacci(input, String::from("iterative"), &iter_fibonacci);
+    fibonacci(input, String::from("recusive"), &recursive_fibonacci);
 }

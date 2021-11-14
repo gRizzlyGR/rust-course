@@ -10,7 +10,7 @@ fn format_time(duration: &Duration) -> (u128, String) {
     };
 }
 
-fn fibonacci(n: usize, algo_name: String, algo: &dyn Fn(usize) -> usize) {
+fn fibonacci(n: u128, algo_name: &String, algo: &dyn Fn(u128) -> u128) {
     let now = Instant::now();
     let fib = algo(n);
     let (elapsed_time, uom) = format_time(&now.elapsed());
@@ -21,10 +21,10 @@ fn fibonacci(n: usize, algo_name: String, algo: &dyn Fn(usize) -> usize) {
     );
 }
 
-fn iter_fibonacci(n: usize) -> usize {
-    let mut a: usize = 0;
-    let mut b: usize = 1;
-    let mut fib: usize = 0;
+fn iter_fibonacci(n: u128) -> u128 {
+    let mut a: u128 = 0;
+    let mut b: u128 = 1;
+    let mut fib: u128 = 0;
     for _ in 1..n {
         fib = a + b;
         a = b;
@@ -34,7 +34,7 @@ fn iter_fibonacci(n: usize) -> usize {
     return fib;
 }
 
-fn recursive_fibonacci(n: usize) -> usize {
+fn recursive_fibonacci(n: u128) -> u128 {
     if n <= 1 {
         return n;
     }
@@ -51,8 +51,8 @@ fn main() {
         .read_line(&mut buffer)
         .expect("Failed to read line");
 
-    let input: usize = buffer.trim().parse().expect("Not a number");
+    let input: u128 = buffer.trim().parse().expect("Not a number");
 
-    fibonacci(input, String::from("iterative"), &iter_fibonacci);
-    fibonacci(input, String::from("recusive"), &recursive_fibonacci);
+    fibonacci(input, &String::from("iterative"), &iter_fibonacci);
+    fibonacci(input, &String::from("recusive"), &recursive_fibonacci);
 }
